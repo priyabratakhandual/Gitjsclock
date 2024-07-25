@@ -3,12 +3,13 @@ pipeline {
 
     environment {
         DOCKER_COMPOSE_FILE = 'docker-compose.yml'
+        SONAR_SCANNER_HOME = '/opt/sonar-scanner-4.8.0.2856-linux'
+        PATH = "${env.PATH}:${env.SONAR_SCANNER_HOME}/bin"
     }
 
     stages {
         stage('Checkout') {
             steps {
-                // Checkout the code from your repository
                 git 'https://github.com/priyabratakhandual/Gitjsclock.git'
             }
         }
@@ -16,7 +17,6 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Build Docker images
                     sh 'docker-compose build'
                 }
             }
@@ -24,12 +24,12 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('sonar') { // Use the name of the SonarQube server configured in Jenkins
+                withSonarQubeEnv('sonar') {
                     sh 'sonar-scanner \
-                        -Dsonar.projectKey=your_project_key \
+                        -Dsonar.projectKey=my_project_key \
                         -Dsonar.sources=. \
                         -Dsonar.host.url=http://15.206.163.163:9000 \
-                        -Dsonar.login=your_sonarqube_token'
+                        -Dsonar.login=squ_63a0fdb56f0e24701dc96b6878240a428fb75497'
                 }
             }
         }
@@ -37,7 +37,6 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    // Deploy services using Docker Compose
                     sh 'docker-compose up -d'
                 }
             }
@@ -46,11 +45,9 @@ pipeline {
 
     post {
         always {
-            // Clean up unused Docker images and containers
             sh 'docker system prune -f'
         }
         success {
-            // Optionally, wait for SonarQube quality gate result
             timeout(time: 1, unit: 'HOURS') {
                 waitForQualityGate abortPipeline: true
             }
