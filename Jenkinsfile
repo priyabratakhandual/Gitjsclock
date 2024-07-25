@@ -5,11 +5,6 @@ pipeline {
         DOCKER_COMPOSE_FILE = 'docker-compose.yml'
     }
 
-    tools {
-        // Name of the SonarQube scanner tool configured in Jenkins
-        sonarQubeScanner 'sonarqube'
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -29,12 +24,12 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('sonar') { // The name you gave your SonarQube server configuration
+                withSonarQubeEnv('sonar') { // Use the name of the SonarQube server configured in Jenkins
                     sh 'sonar-scanner \
-                        -Dsonar.projectKey=my_project_key \
+                        -Dsonar.projectKey=your_project_key \
                         -Dsonar.sources=. \
                         -Dsonar.host.url=http://15.206.163.163:9000 \
-                        -Dsonar.login=squ_63a0fdb56f0e24701dc96b6878240a428fb75497'
+                        -Dsonar.login=your_sonarqube_token'
                 }
             }
         }
@@ -52,7 +47,7 @@ pipeline {
     post {
         always {
             // Clean up unused Docker images and containers
-	    sh 'docker system prune -f'
+            sh 'docker system prune -f'
         }
         success {
             // Optionally, wait for SonarQube quality gate result
