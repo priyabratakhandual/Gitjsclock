@@ -33,7 +33,7 @@ pipeline {
                     sh 'sonar-scanner \
                         -Dsonar.projectKey=my_project_key \
                         -Dsonar.sources=. \
-                        -Dsonar.host.url=http://15.206.163.163:9000/ \
+                        -Dsonar.host.url=http://15.206.163.163:9000 \
                         -Dsonar.login=squ_63a0fdb56f0e24701dc96b6878240a428fb75497'
                 }
             }
