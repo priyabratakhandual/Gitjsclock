@@ -2,7 +2,7 @@ version: '3'
 services:
     Gitjsclock:
       build:
-        context: /src
+        context: .
         dockerfile: Dockerfile
       ports:
         - "80:80"
