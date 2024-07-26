@@ -18,7 +18,7 @@ pipeline {
             steps {
                 withSonarQubeEnv('sonar') {
                     sh '''
-                        /opt/sonar-scanner-4.8.0.2856-linux/bin/sonar-scanner \
+                        sonar-scanneer \
                         -Dsonar.projectKey=my_project_key \
                         -Dsonar.sources=. \
                         -Dsonar.host.url=http://35.154.187.22:9000 \
