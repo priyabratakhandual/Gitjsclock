@@ -18,7 +18,7 @@ pipeline {
             steps {
                 withSonarQubeEnv('sonar') {
                     sh '''
-                        sonar-scanneer \
+                        sonar-scanner \
                         -Dsonar.projectKey=my_project_key \
                         -Dsonar.sources=. \
                         -Dsonar.host.url=http://35.154.187.22:9000 \
@@ -37,16 +37,4 @@ pipeline {
             }
         }
     }
-
-    post {
-        always {
-            sh 'docker system prune -f'
-        }
-        failure {
-            mail to: 'khandualpriyabrata33@.com',
-                 subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
-                 body: "Something is wrong with ${env.BUILD_URL}"
-        }
-    }
 }
-
