@@ -1,12 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        DOCKER_COMPOSE_FILE = 'docker-compose.yml'
-        SONAR_SCANNER_HOME = '/opt/sonar-scanner-4.8.0.2856-linux'
-        PATH = "${env.PATH}:${env.SONAR_SCANNER_HOME}/bin"
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -16,29 +10,30 @@ pipeline {
 
         stage('Build') {
             steps {
-                script {
-                    sh 'docker-compose build'
-                }
+                sh 'docker-compose build'
             }
         }
 
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('sonar') {
-                    sh 'sonar-scanner \
+                    sh '''
+                        sonar-scanner \
                         -Dsonar.projectKey=my_project_key \
                         -Dsonar.sources=. \
-                        -Dsonar.host.url=http://15.206.163.163:9000 \
-                        -Dsonar.login=squ_63a0fdb56f0e24701dc96b6878240a428fb75497'
+                        -Dsonar.host.url=http://35.154.187.22:9000 \
+                        -Dsonar.login=squ_b3c64da7f39126e962f625555ce7e2f5b30cde04
+                    '''
                 }
             }
         }
 
         stage('Deploy') {
+            when {
+                expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
+            }
             steps {
-                script {
-                    sh 'docker-compose up -d'
-                }
+                sh 'docker-compose up -d'
             }
         }
     }
@@ -47,10 +42,10 @@ pipeline {
         always {
             sh 'docker system prune -f'
         }
-        success {
-            timeout(time: 1, unit: 'HOURS') {
-                waitForQualityGate abortPipeline: true
-            }
+        failure {
+            mail to: 'khandualpriyabrata33@.com',
+                 subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
+                 body: "Something is wrong with ${env.BUILD_URL}"
         }
     }
 }
