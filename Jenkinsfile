@@ -14,19 +14,7 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('sonar') {
-                    sh '''
-                        /opt/sonar-scanner-4.8.0.2856-linux/bin/sonar-scanner \
-                        -Dsonar.projectKey=my_project_key \
-                        -Dsonar.sources=. \
-                        -Dsonar.host.url=http://35.154.187.22:9000 \
-                        -Dsonar.login=squ_b3c64da7f39126e962f625555ce7e2f5b30cde04
-                    '''
-                }
-            }
-        }
+        // Removed SonarQube Analysis stage
 
         stage('Deploy') {
             when {
