@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        SONAR_SCANNER_HOME = '/opt/sonar-scanner-4.8.0.2856-linux/bin' // Path to SonarQube Scanner
+        SONAR_SCANNER_HOME = '/home/ubuntu/opt/sonar-scanner-4.8.0.2856-linux/bin' // Path to SonarQube Scanner
     }
 
     stages {
