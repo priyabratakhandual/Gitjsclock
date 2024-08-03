@@ -6,6 +6,7 @@ pipeline {
         SSH_CREDENTIALS_ID = '8e7f6548-61aa-45d7-9f3f-5aba166533e6' // Replace with your SSH credentials ID
         TARGET_SERVER = 'ubuntu@13.234.30.106' // Replace with your target server's user and hostname/IP
         TARGET_DIR = '/home/ubuntu/' // Replace with your target directory
+        DOCKER_COMPOSE_PATH = '/usr/local/bin/docker-compose'
     }
 
     stages {
