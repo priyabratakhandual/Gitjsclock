@@ -2,9 +2,8 @@ pipeline {
     agent any
 
     environment {
-        SONARQUBE_SERVER = 'sonarqube' // Name of the SonarQube server configured in Jenkins
-        SSH_CREDENTIALS_ID = '8e7f6548-61aa-45d7-9f3f-5aba166533e6' // Replace with your SSH credentials ID
-        TARGET_SERVER = 'ubuntu@13.234.30.106' // Replace with your target server's user and hostname/IP
+        SSH_CREDENTIALS_ID = '1c9358e9-8d11-4337-a5a4-4557bcbe7491' // Replace with your SSH credentials ID
+        TARGET_SERVER = 'ubuntu@15.206.169.227' // Replace with your target server's user and hostname/IP
         TARGET_DIR = '/home/ubuntu/' // Replace with your target directory
     }
 
@@ -18,17 +17,6 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'docker-compose build'
-            }
-        }
-
-        stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv(SONARQUBE_SERVER) { // Use the configured SonarQube server
-                    script {
-                        def scannerHome = tool name: 'sonarqube', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
-                        sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=sonr_project -Dsonar.sources=src -Dsonar.host.url=http://13.234.30.106:9000/ -Dsonar.login=squ_c58f5d0df2220202f965e30d92c5c812c7631341"
-                    }
-                }
             }
         }
 
@@ -55,3 +43,4 @@ pipeline {
         }
     }
 }
+
