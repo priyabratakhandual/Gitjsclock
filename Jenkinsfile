@@ -34,9 +34,11 @@ pipeline {
                 echo 'Setting up Nginx configuration...'
                 sshagent([env.SSH_CREDENTIALS_ID]) {
                     sh """
-                        # Copy the Nginx configuration file to the server
-                        scp -o StrictHostKeyChecking=no myapp ubuntu@43.204.134.84:/etc/nginx/sites-available/myapp
+                        # Copy the Nginx configuration file to a temporary directory on the remote server
+                        scp -o StrictHostKeyChecking=no myapp ${env.TARGET_SERVER}:/tmp/myapp
 
+                        # Use sudo to move the file to the correct directory
+                        ssh -o StrictHostKeyChecking=no ${env.TARGET_SERVER} 'sudo mv /tmp/myapp /etc/nginx/sites-available/myapp'
 
                         # Create a symlink in sites-enabled to enable the site
                         ssh -o StrictHostKeyChecking=no ${env.TARGET_SERVER} 'sudo ln -s /etc/nginx/sites-available/myapp /etc/nginx/sites-enabled/'
@@ -58,4 +60,3 @@ pipeline {
         }
     }
 }
-
