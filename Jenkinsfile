@@ -35,7 +35,8 @@ pipeline {
                 sshagent([env.SSH_CREDENTIALS_ID]) {
                     sh """
                         # Copy the Nginx configuration file to the server
-                        scp -o StrictHostKeyChecking=no nginx_config/myapp ${env.TARGET_SERVER}:/etc/nginx/sites-available/myapp
+                        scp -o StrictHostKeyChecking=no myapp ubuntu@43.204.134.84:/etc/nginx/sites-available/myapp
+
 
                         # Create a symlink in sites-enabled to enable the site
                         ssh -o StrictHostKeyChecking=no ${env.TARGET_SERVER} 'sudo ln -s /etc/nginx/sites-available/myapp /etc/nginx/sites-enabled/'
