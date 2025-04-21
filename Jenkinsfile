@@ -23,7 +23,7 @@ pipeline {
                     sh 'docker rm -f gitjsclock-container || true'
                     
                     // Run new container
-                    sh 'docker run -d --name gitjsclock-container -p 8080:80 gitjsclock-app'
+                    sh 'docker run -d --name gitjsclock-container -p 8087:80 gitjsclock-app'
                 }
             }
         }
